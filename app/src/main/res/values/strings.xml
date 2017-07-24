@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">AppLes</string>
+    <string name="dashboard_schedule">Schedule</string>
+    <string name="dashboard_student_list">Students</string>
+</resources>

@@ -1,7 +1,5 @@
 package com.anakarwin.apples;
 
-import java.util.Date;
-
 /**
  * Created by yusuf on 7/23/2017.
  */
@@ -11,4 +9,7 @@ public interface INavigateFragment {
 	void goToSchedule();
 	void goToStudent();
 	void goToDateDetails(int year, int month, int dayOfMonth);
+	void goToPayments();
+	void goToTopics();
+	void goToChangeData();
 }

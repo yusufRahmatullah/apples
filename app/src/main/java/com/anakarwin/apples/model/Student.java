@@ -9,6 +9,7 @@ import io.realm.annotations.PrimaryKey;
 
 public class Student extends RealmObject {
 
+	public static final String CLASS_NAME = "Student";
 	public static final String FIELD_NAME = "name";
 	public static final String FIELD_LEVEL = "level";
 

@@ -10,6 +10,7 @@ import io.realm.RealmObject;
 
 public class Payment extends RealmObject {
 
+	public static final String CLASS_NAME = "Payment";
 	public static final String FIELD_DATE = "date";
 	public static final String FIELD_STUDENT = "student";
 

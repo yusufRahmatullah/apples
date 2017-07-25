@@ -10,6 +10,7 @@ import io.realm.RealmObject;
 
 public class Topic extends RealmObject {
 
+	public static final String CLASS_NAME = "Topic";
 	public static final String FIELD_DATE = "date";
 	public static final String FIELD_LEVEL = "level";
 	public static final String FIELD_CONTENT = "content";

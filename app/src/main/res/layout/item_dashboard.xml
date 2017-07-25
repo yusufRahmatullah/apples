@@ -37,7 +37,7 @@
             android:textColor="@color/primary_text"
             android:textSize="@dimen/item_title_text_size"
             android:textStyle="bold"
-            tools:text="@string/dashboard_schedule"/>
+            tools:text="@string/dashboard_presents"/>
 
     </LinearLayout>
 </com.anakarwin.apples.SquareCardView>

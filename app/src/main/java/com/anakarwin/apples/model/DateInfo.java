@@ -10,6 +10,7 @@ import io.realm.RealmObject;
 
 public class DateInfo extends RealmObject {
 
+	public static final String CLASS_NAME = "DateInfo";
 	public static final String FIELD_DATE = "date";
 	public static final String FIELD_STATUS = "status";
 

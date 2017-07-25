@@ -10,6 +10,7 @@ import io.realm.RealmObject;
 
 public class Present extends RealmObject {
 
+	public static final String CLASS_NAME = "Present";
 	public static final String FIELD_DATE = "date";
 	public static final String FIELD_STUDENT = "student";
 

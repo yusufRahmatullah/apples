@@ -20,7 +20,12 @@ public class MainActivity extends AppCompatActivity implements INavigateFragment
 
 	@Override
 	public void onBackPressed() {
-		getSupportFragmentManager().popBackStack();
+		FragmentManager fm = getSupportFragmentManager();
+		if (fm.getBackStackEntryCount() > 0) {
+			fm.popBackStack();
+		} else {
+			super.onBackPressed();
+		}
 	}
 
 	@Override
@@ -44,10 +49,10 @@ public class MainActivity extends AppCompatActivity implements INavigateFragment
 
 	@Override
 	public void goToStudent() {
-		getSupportFragmentManager().beginTransaction()
-			.replace(R.id.fragmentContainer, new DashboardFragment())
-			.addToBackStack(ScheduleFragment.class.getSimpleName())
-			.commit();
+//		getSupportFragmentManager().beginTransaction()
+//			.replace(R.id.fragmentContainer, new DashboardFragment())
+//			.addToBackStack(ScheduleFragment.class.getSimpleName())
+//			.commit();
 	}
 
 	@Override
@@ -56,5 +61,20 @@ public class MainActivity extends AppCompatActivity implements INavigateFragment
 			.replace(R.id.fragmentContainer, DateDetailFragment.newInstance(year, month, dayOfMonth))
 			.addToBackStack(ScheduleFragment.class.getSimpleName())
 			.commit();
+	}
+
+	@Override
+	public void goToPayments() {
+
+	}
+
+	@Override
+	public void goToTopics() {
+
+	}
+
+	@Override
+	public void goToChangeData() {
+
 	}
 }

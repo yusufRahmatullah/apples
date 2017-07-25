@@ -64,9 +64,12 @@ public class DashboardFragment extends Fragment {
 	private void initData() {
 		items = new ArrayList<>();
 		items.add(new DashboardItem(R.drawable.ic_schedule,
-				getString(R.string.dashboard_schedule)));
+				getString(R.string.dashboard_presents)));
 		items.add(new DashboardItem(R.drawable.ic_students,
-				getString(R.string.dashboard_student_list)));
+				getString(R.string.dashboard_students)));
+		items.add(new DashboardItem(R.drawable.ic_payment, getString(R.string.dashboard_payments)));
+		items.add(new DashboardItem(R.drawable.ic_topics, getString(R.string.dashboard_topics)));
+		items.add(new DashboardItem(R.drawable.ic_change_datas, getString(R.string.dashboard_change_data)));
 	}
 
 	private void navigateScreen(int position) {
@@ -77,6 +80,15 @@ public class DashboardFragment extends Fragment {
 					break;
 				case 1:
 					navigateFragment.goToStudent();
+					break;
+				case 2:
+					navigateFragment.goToPayments();
+					break;
+				case 3:
+					navigateFragment.goToTopics();
+					break;
+				case 4:
+					navigateFragment.goToChangeData();
 					break;
 				default:
 					break;

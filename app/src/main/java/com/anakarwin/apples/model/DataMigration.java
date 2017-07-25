@@ -16,19 +16,19 @@ public class DataMigration implements RealmMigration {
 	public void migrate(DynamicRealm realm, long oldVersion, long newVersion) {
 		RealmSchema schema = realm.getSchema();
 		if (oldVersion == 0) {
-			schema.create("DateInfo")
+			schema.create(DateInfo.CLASS_NAME)
 				.addField(DateInfo.FIELD_DATE, Date.class)
 				.addField(DateInfo.FIELD_STATUS, Date.class);
-			schema.create("Student")
+			schema.create(Student.CLASS_NAME)
 				.addField(Student.FIELD_NAME, String.class)
 				.addField(Student.FIELD_LEVEL, int.class);
-			schema.create("Payment")
+			schema.create(Payment.CLASS_NAME)
 				.addField(Payment.FIELD_DATE, Date.class)
 				.addField(Payment.FIELD_STUDENT, Student.class);
-			schema.create("Present")
+			schema.create(Present.CLASS_NAME)
 				.addField(Present.FIELD_DATE, Date.class)
 				.addField(Present.FIELD_STUDENT, Student.class);
-			schema.create("Topic")
+			schema.create(Topic.CLASS_NAME)
 				.addField(Topic.FIELD_DATE, Date.class)
 				.addField(Topic.FIELD_CONTENT, String.class)
 				.addField(Topic.FIELD_LEVEL, int.class);

@@ -1,14 +1,21 @@
 package com.anakarwin.apples.model;
 
 import android.content.Context;
-import android.util.Log;
 
-import java.text.DateFormat;
+import com.anakarwin.apples.plugin.ILoader;
+import com.anakarwin.apples.plugin.Loader;
+
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.SimpleTimeZone;
 
 import io.realm.Realm;
+import io.realm.RealmConfiguration;
+import io.realm.RealmResults;
+import io.realm.Sort;
 
 /**
  * Created by yusuf on 7/23/2017.
@@ -27,33 +34,55 @@ public class DAO {
 
 	// ------------ singleton -------------------
 
-	public static final String DATE_FORMAT = "dd/MM/yyyy";
-
-	private Realm realm;
-
-	private List<Payment> payments;
-	private List<Student> students;
-	private List<Present> presents;
-	private List<Topic> topics;
-
-	public void initData(Context context) {
+	public void initRealm(Context context) {
 		Realm.init(context);
-		realm = Realm.getDefaultInstance();
-		presents = realm.where(Present.class).findAll();
-		payments = realm.where(Payment.class).findAll();
-		students = realm.where(Student.class).findAll();
-		topics = realm.where(Topic.class).findAll();
-		if (presents.size() == 0 || payments.size() == 0
-				|| students.size() == 0 || topics.size() == 0) {
-			migrateData();
-		}
+		RealmConfiguration configuration = new RealmConfiguration.Builder()
+			.schemaVersion(1)
+			.migration(new DataMigration())
+			.initialData(new Realm.Transaction() {
+				@Override
+				public void execute(Realm realm) {
+					migrateData(realm);
+				}
+			})
+			.build();
+		Realm.setDefaultConfiguration(configuration);
 	}
 
-	private void migrateData() {
-		Date d15 = new Date(117, 6, 15);
-		Date d16 = new Date(117, 6, 16);
-		Date d22 = new Date(117, 6, 22);
-		Date d23 = new Date(117, 6, 23);
+	public List<DateInfo> getDateInfos() {
+		int fd = Calendar.getInstance().getActualMinimum(Calendar.DATE);
+		int ld = Calendar.getInstance().getActualMaximum(Calendar.DATE);
+		Calendar before = new GregorianCalendar();
+		before.set(Calendar.DAY_OF_MONTH, fd);
+		Calendar after = new GregorianCalendar();
+		after.set(Calendar.DAY_OF_MONTH, ld);
+		RealmResults<DateInfo> dateInfos = Realm.getDefaultInstance().where(DateInfo.class)
+			.between(DateInfo.FIELD_DATE, before.getTime(), after.getTime())
+			.findAll();
+		return dateInfos;
+	}
+
+	public List<Present> getPresent(int year, int month, int dayOfMonth) {
+		Date from = new Date(year, month, dayOfMonth, 0, 0, 0);
+		Date to = new Date(year, month, dayOfMonth, 23, 59, 59);
+		RealmResults<Present> presents = Realm.getDefaultInstance().where(Present.class)
+			.between(Present.FIELD_DATE, from, to)
+			.findAllSorted(Present.FIELD_STUDENT + "." + Student.FIELD_LEVEL, Sort.ASCENDING);
+		return presents;
+	}
+
+	private void migrateData(Realm realm) {
+		Date d15 = new Date(2017 - 1900, 7 - 1, 15);
+		Date d16 = new Date(2017 - 1900, 7 - 1, 16);
+		Date d22 = new Date(2017 - 1900, 7 - 1, 22);
+		Date d23 = new Date(2017 - 1900, 7 - 1, 23);
+
+		List<DateInfo> dateInfos = new ArrayList<>();
+		dateInfos.add(new DateInfo(d15, DateInfo.Type.DONE));
+		dateInfos.add(new DateInfo(d16, DateInfo.Type.DONE));
+		dateInfos.add(new DateInfo(d22, DateInfo.Type.DONE));
+		dateInfos.add(new DateInfo(d23, DateInfo.Type.DONE));
+
 		Student ilham = new Student("Ilham", 6);
 		Student silsi = new Student("Silsi", 6);
 		Student indah = new Student("Indah", 6);
@@ -66,7 +95,7 @@ public class DAO {
 		Student bayu = new Student("Bayu", 9);
 		Student ainun = new Student("Ainun", 9);
 		Student ikhsan = new Student("Ikhsan", 10);
-		students = new ArrayList<>();
+		List<Student> students = new ArrayList<>();
 		students.add(ilham);
 		students.add(silsi);
 		students.add(indah);
@@ -80,7 +109,7 @@ public class DAO {
 		students.add(ainun);
 		students.add(ikhsan);
 
-		topics = new ArrayList<>();
+		List<Topic> topics = new ArrayList<>();
 		topics.add(new Topic(d15, 6, "Konversi Bilangan Desimal"));
 		topics.add(new Topic(d16, 6, "Konversi Bilangan Desimal"));
 		topics.add(new Topic(d22, 6, "Mengurutkan Bilandan Desimal"));
@@ -93,7 +122,7 @@ public class DAO {
 		topics.add(new Topic(d16, 10, "Persamaan Nilai Mutlak"));
 		topics.add(new Topic(d22, 10, "Pertidaksamaan Nilai Mutlak"));
 
-		presents = new ArrayList<>();
+		List<Present> presents = new ArrayList<>();
 		presents.add(new Present(d15, ilham));
 		presents.add(new Present(d16, ilham));
 		presents.add(new Present(d22, ilham));
@@ -129,47 +158,16 @@ public class DAO {
 
 		presents.add(new Present(d15, ikhsan));
 		presents.add(new Present(d16, ikhsan));
-		presents.add(new Present(d23, ikhsan));
+		presents.add(new Present(d22, ikhsan));
 
-		payments = new ArrayList<>();
+		List<Payment> payments = new ArrayList<>();
 		payments.add(new Payment(d22, fitri));
 		payments.add(new Payment(d22, ikhsan));
 
-		realm.executeTransaction(new Realm.Transaction() {
-			@Override
-			public void execute(Realm realm) {
-				realm.copyToRealmOrUpdate(presents);
-				realm.copyToRealmOrUpdate(students);
-				realm.copyToRealmOrUpdate(topics);
-				realm.copyToRealmOrUpdate(payments);
-			}
-		});
-	}
-
-	private void debug() {
-		for (Present present : presents) {
-			Log.e("present", "date: " + DateFormat.getInstance().format(present.getDate()));
-			Log.e("present", "student: " + present.getStudent().getName());
-			Log.e("present", "===========================");
-		}
-
-		for (Student student : students) {
-			Log.e("student", "name: " + student.getName());
-			Log.e("student", "class: " + student.getLevel());
-			Log.e("student", "=================================");
-		}
-
-		for (Topic topic : topics) {
-			Log.e("topic", "date: " + DateFormat.getInstance().format(topic.getDate()));
-			Log.e("topic", "level: " + topic.getLevel());
-			Log.e("topic", "content: " + topic.getContent());
-			Log.e("topic", "========================================");
-		}
-
-		for (Payment payment : payments) {
-			Log.e("payment", "date: " + DateFormat.getInstance().format(payment.getDate()));
-			Log.e("payment", "student: " + payment.getStudent().getName());
-			Log.e("payment", "========================================");
-		}
+		realm.copyToRealmOrUpdate(dateInfos);
+		realm.copyToRealmOrUpdate(presents);
+		realm.copyToRealmOrUpdate(students);
+		realm.copyToRealmOrUpdate(topics);
+		realm.copyToRealmOrUpdate(payments);
 	}
 }

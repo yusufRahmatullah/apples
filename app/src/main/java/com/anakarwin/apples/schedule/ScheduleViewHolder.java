@@ -1,10 +1,12 @@
 package com.anakarwin.apples.schedule;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.anakarwin.apples.R;
+import com.anakarwin.apples.model.DateInfo;
 
 /**
  * Created by yusuf on 7/23/2017.
@@ -19,10 +21,10 @@ public class ScheduleViewHolder extends RecyclerView.ViewHolder {
 		date = (TextView) itemView.findViewById(R.id.date);
 	}
 
-	public void bind(ScheduleItem item) {
+	public void bind(DateInfo dateInfo) {
 		try {
-			date.setText(String.valueOf(item.getDate()));
-			switch (item.getStatus()) {
+			date.setText(String.valueOf(dateInfo.getDate().getDate()));
+			switch (dateInfo.getStatusType()) {
 				case READY:
 					itemView.setBackgroundResource(R.color.ready);
 					break;

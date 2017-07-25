@@ -2,4 +2,8 @@
     <string name="app_name">AppLes</string>
     <string name="dashboard_schedule">Schedule</string>
     <string name="dashboard_student_list">Students</string>
+    <string name="date_details_class_format">Class %1$d</string>
+
+	<string name="menu_see_previous_month">See Previous Month</string>
+	<string name="menu_see_next_month">See Next Month</string>
 </resources>

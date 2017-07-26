@@ -152,6 +152,8 @@ public class ScheduleFragment extends Fragment {
 
 	private void navigateToDate(int position) {
 		Date date = items.get(position).getDate();
-		navigateFragment.goToDateDetails(date.getYear(), date.getMonth(), date.getDate());
+		if (navigateFragment != null && date != null) {
+			navigateFragment.goToDateDetails(date.getYear(), date.getMonth(), date.getDate());
+		}
 	}
 }

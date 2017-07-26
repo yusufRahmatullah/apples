@@ -1,6 +1,5 @@
 package com.anakarwin.apples.schedule.dateDetails;
 
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +8,6 @@ import android.widget.TextView;
 
 import com.anakarwin.apples.R;
 import com.anakarwin.apples.model.Present;
-import com.anakarwin.apples.model.Student;
 import com.bignerdranch.expandablerecyclerview.Adapter.ExpandableRecyclerAdapter;
 import com.bignerdranch.expandablerecyclerview.Model.ParentListItem;
 import com.bignerdranch.expandablerecyclerview.ViewHolder.ChildViewHolder;
@@ -108,7 +106,7 @@ class DateDetailsParentVH extends ParentViewHolder {
 	}
 
 	public void bind(DateDetailsParent item) {
-		level.setText(itemView.getContext().getString(R.string.date_details_class_format, item.getLevel()));
+		level.setText(itemView.getContext().getString(R.string.class_format, item.getLevel()));
 		count.setText(String.valueOf(item.getChildItemList().size()));
 	}
 }

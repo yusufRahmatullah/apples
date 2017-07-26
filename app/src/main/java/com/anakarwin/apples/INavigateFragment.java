@@ -8,6 +8,7 @@ public interface INavigateFragment {
 	void goToDashboard();
 	void goToSchedule();
 	void goToStudent();
+	void goToStudentDetails(String name);
 	void goToDateDetails(int year, int month, int dayOfMonth);
 	void goToPayments();
 	void goToTopics();

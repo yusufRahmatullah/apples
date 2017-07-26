@@ -6,7 +6,13 @@
 	<string name="dashboard_topics">Topics</string>
 	<string name="dashboard_change_data">Change Data</string>
 	<string name="dashboard_edit_data">Edit data</string>
-    <string name="date_details_class_format">Class %1$d</string>
+    <string name="class_format">Class %1$d</string>
+
+	<string name="student_details_present_format">Presents: %1$d</string>
+	<string name="student_details_present_after_payment_format">Present after payment: %1$d</string>
+	<string name="student_details_last_payment_format">Last payment: %1$s</string>
+	<string name="student_details_show_details">More</string>
+	<string name="student_details_hide_details">Less</string>
 
 	<string name="menu_see_previous_month">See Previous Month</string>
 	<string name="menu_see_next_month">See Next Month</string>

@@ -5,11 +5,13 @@ import android.content.Context;
 import com.anakarwin.apples.plugin.ILoader;
 import com.anakarwin.apples.plugin.Loader;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.SimpleTimeZone;
 
 import io.realm.Realm;
@@ -33,6 +35,8 @@ public class DAO {
 	}
 
 	// ------------ singleton -------------------
+	private static final String DATE_FORMAT = "dd-MM-yyyy";
+	public static final SimpleDateFormat dateFormatter = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
 
 	public void initRealm(Context context) {
 		Realm.init(context);
@@ -69,6 +73,43 @@ public class DAO {
 			.between(Present.FIELD_DATE, from, to)
 			.findAllSorted(Present.FIELD_STUDENT + "." + Student.FIELD_LEVEL, Sort.ASCENDING);
 		return presents;
+	}
+
+	public List<Student> getStudents() {
+		return Realm.getDefaultInstance().where(Student.class)
+			.findAllSorted(Student.FIELD_LEVEL);
+	}
+
+	public Student getStudent(String name) {
+		return Realm.getDefaultInstance().where(Student.class)
+			.equalTo(Student.FIELD_NAME, name)
+			.findFirst();
+	}
+
+	public List<Payment> getPayments() {
+		return Realm.getDefaultInstance().where(Payment.class)
+			.findAllSorted(Payment.FIELD_DATE, Sort.DESCENDING);
+	}
+
+	public Date getStudentPayments(String name) {
+		RealmResults<Payment> payments = Realm.getDefaultInstance().where(Payment.class)
+			.equalTo(Payment.FIELD_STUDENT + "." + Student.FIELD_NAME, name)
+			.findAllSorted(Payment.FIELD_DATE, Sort.DESCENDING);
+		if (payments != null && payments.size() > 0) {
+			return payments.get(0).getDate();
+		}
+		return null;
+	}
+
+	public List<Present> getStudentPresents (String name) {
+		return Realm.getDefaultInstance().where(Present.class)
+			.equalTo(Present.FIELD_STUDENT + "." + Student.FIELD_NAME, name)
+			.findAllSorted(Present.FIELD_DATE, Sort.DESCENDING);
+	}
+
+	public List<Topic> getTopics () {
+		return Realm.getDefaultInstance().where(Topic.class)
+			.findAllSorted(Topic.FIELD_DATE, Sort.DESCENDING);
 	}
 
 	private void migrateData(Realm realm) {
@@ -170,4 +211,6 @@ public class DAO {
 		realm.copyToRealmOrUpdate(topics);
 		realm.copyToRealmOrUpdate(payments);
 	}
+
+
 }

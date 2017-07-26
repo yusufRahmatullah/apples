@@ -46,7 +46,7 @@ public class DashboardFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
 							 @Nullable Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
-		list = (RecyclerView) view.findViewById(R.id.list);
+		list = (RecyclerView) view.findViewById(R.id.listContainer);
 		adapter = new DashboardAdapter(items);
 		adapter.setOnListItemSelected(new OnListItemSelected() {
 			@Override

@@ -12,5 +12,6 @@ public interface INavigateFragment {
 	void goToDateDetails(int year, int month, int dayOfMonth);
 	void goToPayments();
 	void goToTopics();
+	void goToDailyInput();
 	void goToChangeData();
 }

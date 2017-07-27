@@ -1,12 +1,24 @@
 <resources>
     <string name="app_name">AppLes</string>
+
     <string name="dashboard_presents">Schedule</string>
     <string name="dashboard_students">Students</string>
 	<string name="dashboard_payments">Payments</string>
 	<string name="dashboard_topics">Topics</string>
 	<string name="dashboard_change_data">Change Data</string>
 	<string name="dashboard_edit_data">Edit data</string>
+	<string name="dashboard_daily_input">Daily Input</string>
+
     <string name="class_format">Class %1$d</string>
+
+	<string name="daily_alert_date_wrong">Chosen date is not Saturday or Sunday</string>
+	<string name="daily_dialog_positive">Re-choose</string>
+	<string name="daily_dialog_negative">Dismiss</string>
+	<string name="daily_topic_level_hint">Class</string>
+	<string name="daily_topic_content_hint">Content</string>
+	<string name="daily_list_present">Today Present</string>
+	<string name="daily_list_topic">Today Topic</string>
+	<string name="daily_list_payment">Today Payment</string>
 
 	<string name="student_details_present_format">Presents: %1$d</string>
 	<string name="student_details_present_after_payment_format">Present after payment: %1$d</string>
@@ -14,6 +26,14 @@
 	<string name="student_details_show_details">More</string>
 	<string name="student_details_hide_details">Less</string>
 
+	<string name="schedule_saturday">Saturday</string>
+	<string name="schedule_sunday">Sunday</string>
+
 	<string name="menu_see_previous_month">See Previous Month</string>
 	<string name="menu_see_next_month">See Next Month</string>
+	<string name="menu_save">Save</string>
+	<string name="menu_done">Done</string>
+	<string name="menu_refresh">Refresh</string>
+
+	<string name="addable_add">Add New</string>
 </resources>

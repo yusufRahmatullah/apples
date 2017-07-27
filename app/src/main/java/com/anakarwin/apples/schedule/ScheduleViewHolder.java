@@ -15,10 +15,12 @@ import com.anakarwin.apples.model.DateInfo;
 public class ScheduleViewHolder extends RecyclerView.ViewHolder {
 
 	private TextView date;
+	private TextView day;
 
 	public ScheduleViewHolder(View itemView) {
 		super(itemView);
 		date = (TextView) itemView.findViewById(R.id.date);
+		day = (TextView) itemView.findViewById(R.id.day);
 	}
 
 	public void bind(DateInfo dateInfo) {
@@ -39,9 +41,17 @@ public class ScheduleViewHolder extends RecyclerView.ViewHolder {
 					break;
 
 			}
+			if (dateInfo.getDate().getDay() == 0) {
+				day.setText(itemView.getContext().getString(R.string.schedule_sunday));
+			} else if (dateInfo.getDate().getDay() == 6) {
+				day.setText(itemView.getContext().getString(R.string.schedule_saturday));
+			} else {
+				day.setText("-");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			date.setText("0");
+			day.setText("-");
 		}
 	}
 }

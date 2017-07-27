@@ -69,6 +69,7 @@ public class DashboardFragment extends Fragment {
 				getString(R.string.dashboard_students)));
 		items.add(new DashboardItem(R.drawable.ic_payment, getString(R.string.dashboard_payments)));
 		items.add(new DashboardItem(R.drawable.ic_topics, getString(R.string.dashboard_topics)));
+		items.add(new DashboardItem(R.drawable.ic_today, getContext().getString(R.string.dashboard_daily_input)));
 		items.add(new DashboardItem(R.drawable.ic_change_datas, getString(R.string.dashboard_change_data)));
 	}
 
@@ -88,6 +89,9 @@ public class DashboardFragment extends Fragment {
 					navigateFragment.goToTopics();
 					break;
 				case 4:
+					navigateFragment.goToDailyInput();
+					break;
+				case 5:
 					navigateFragment.goToChangeData();
 					break;
 				default:

@@ -35,8 +35,8 @@ public class DAO {
 	}
 
 	// ------------ singleton -------------------
-	private static final String DATE_FORMAT = "dd-MM-yyyy";
-	public static final SimpleDateFormat dateFormatter = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
+	public static final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+	public static final SimpleDateFormat dayDateFormatter = new SimpleDateFormat("EEE, dd-MM-yyy", Locale.getDefault());
 
 	public void initRealm(Context context) {
 		Realm.init(context);
@@ -66,6 +66,7 @@ public class DAO {
 		return dateInfos;
 	}
 
+	//region present
 	public List<Present> getPresent(int year, int month, int dayOfMonth) {
 		Date from = new Date(year, month, dayOfMonth, 0, 0, 0);
 		Date to = new Date(year, month, dayOfMonth, 23, 59, 59);
@@ -75,6 +76,23 @@ public class DAO {
 		return presents;
 	}
 
+	public List<Present> getStudentPresents (String name) {
+		return Realm.getDefaultInstance().where(Present.class)
+			.equalTo(Present.FIELD_STUDENT + "." + Student.FIELD_NAME, name)
+			.findAllSorted(Present.FIELD_DATE, Sort.DESCENDING);
+	}
+
+	public void savePresents(final List<Present> presents) {
+		Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
+			@Override
+			public void execute(Realm realm) {
+				Realm.getDefaultInstance().copyToRealmOrUpdate(presents);
+			}
+		});
+	}
+	//endregion
+
+	//region student
 	public List<Student> getStudents() {
 		return Realm.getDefaultInstance().where(Student.class)
 			.findAllSorted(Student.FIELD_LEVEL);
@@ -85,10 +103,20 @@ public class DAO {
 			.equalTo(Student.FIELD_NAME, name)
 			.findFirst();
 	}
+	//endregion
 
+	//region payment
 	public List<Payment> getPayments() {
 		return Realm.getDefaultInstance().where(Payment.class)
 			.findAllSorted(Payment.FIELD_DATE, Sort.DESCENDING);
+	}
+
+	public List<Payment> getPayments(int year, int month, int dayOfMonth) {
+		Date from = new Date(year, month, dayOfMonth, 0, 0, 0);
+		Date to = new Date(year, month, dayOfMonth, 23, 59, 59);
+		return Realm.getDefaultInstance().where(Payment.class)
+			.between(Payment.FIELD_DATE, from, to)
+			.findAllSorted(Payment.FIELD_STUDENT + "." + Student.FIELD_LEVEL);
 	}
 
 	public Date getStudentPayments(String name) {
@@ -100,17 +128,42 @@ public class DAO {
 		}
 		return null;
 	}
+	//endregion
 
-	public List<Present> getStudentPresents (String name) {
-		return Realm.getDefaultInstance().where(Present.class)
-			.equalTo(Present.FIELD_STUDENT + "." + Student.FIELD_NAME, name)
-			.findAllSorted(Present.FIELD_DATE, Sort.DESCENDING);
-	}
-
+	//region topics
 	public List<Topic> getTopics () {
 		return Realm.getDefaultInstance().where(Topic.class)
 			.findAllSorted(Topic.FIELD_DATE, Sort.DESCENDING);
 	}
+
+	public List<Topic> getTopics(int year, int month, int dayOfMonth) {
+		Date from = new Date(year, month, dayOfMonth, 0, 0, 0);
+		Date to = new Date(year, month, dayOfMonth, 23, 59, 59);
+		return Realm.getDefaultInstance().where(Topic.class)
+			.between(Topic.FIELD_DATE, from, to)
+			.findAllSorted(Topic.FIELD_LEVEL);
+	}
+
+	public void saveTopics(final List<Topic> topics) {
+		Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
+			@Override
+			public void execute(Realm realm) {
+				Realm.getDefaultInstance().copyToRealmOrUpdate(topics);
+			}
+		});
+	}
+	//endregion
+
+	//region date info
+	public void saveDateInfo(final DateInfo dateInfo) {
+		Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
+			@Override
+			public void execute(Realm realm) {
+				Realm.getDefaultInstance().copyToRealmOrUpdate(dateInfo);
+			}
+		});
+	}
+	//endregion
 
 	private void migrateData(Realm realm) {
 		Date d15 = new Date(2017 - 1900, 7 - 1, 15);

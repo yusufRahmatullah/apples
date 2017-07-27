@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
+import com.anakarwin.apples.daily.DailyFragment;
 import com.anakarwin.apples.dashboard.DashboardFragment;
 import com.anakarwin.apples.payment.PaymentFragment;
 import com.anakarwin.apples.schedule.dateDetails.DateDetailFragment;
@@ -88,6 +89,14 @@ public class MainActivity extends AppCompatActivity implements INavigateFragment
 		getSupportFragmentManager().beginTransaction()
 			.replace(R.id.fragmentContainer, new TopicFragment())
 			.addToBackStack(TopicFragment.class.getSimpleName())
+			.commit();
+	}
+
+	@Override
+	public void goToDailyInput() {
+		getSupportFragmentManager().beginTransaction()
+			.replace(R.id.fragmentContainer, new DailyFragment())
+			.addToBackStack(DailyFragment.class.getSimpleName())
 			.commit();
 	}
 

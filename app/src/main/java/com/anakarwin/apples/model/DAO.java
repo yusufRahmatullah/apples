@@ -1,10 +1,6 @@
 package com.anakarwin.apples.model;
 
 import android.content.Context;
-import android.util.Log;
-
-import com.anakarwin.apples.plugin.ILoader;
-import com.anakarwin.apples.plugin.Loader;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,7 +9,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
-import java.util.SimpleTimeZone;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -92,6 +87,15 @@ public class DAO {
 		return Realm.getDefaultInstance().where(Student.class)
 			.equalTo(Student.FIELD_NAME, name)
 			.findFirst();
+	}
+
+	public void addStudent(final Student student) {
+		Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
+			@Override
+			public void execute(Realm realm) {
+				Realm.getDefaultInstance().copyToRealm(student);
+			}
+		});
 	}
 	//endregion
 

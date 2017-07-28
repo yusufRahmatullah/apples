@@ -25,6 +25,12 @@
 	<string name="student_details_last_payment_format">Last payment: %1$s</string>
 	<string name="student_details_show_details">More</string>
 	<string name="student_details_hide_details">Less</string>
+	<string name="student_add_name_hint">Name</string>
+	<string name="student_add_class_hint">Class</string>
+	<string name="student_add_done_button">Done</string>
+	<string name="student_add_title">Add New Student</string>
+	<string name="student_add_error_name_exist">Name already exists</string>
+	<string name="student_add_error_input">Input error</string>
 
 	<string name="schedule_saturday">Saturday</string>
 	<string name="schedule_sunday">Sunday</string>

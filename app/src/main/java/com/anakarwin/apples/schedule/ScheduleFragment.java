@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -115,36 +116,40 @@ public class ScheduleFragment extends Fragment {
 	private void initData() {
 		items = new ArrayList<>();
 
-		int maximum = Calendar.getInstance().getMaximum(Calendar.DAY_OF_MONTH);
 		Calendar cal = new GregorianCalendar();
 		cal.set(Calendar.YEAR, currentYear);
 		cal.set(Calendar.MONTH, currentMonth);
+		int maximum = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+		int minimum = cal.getActualMinimum(Calendar.DAY_OF_MONTH);
 		monthText = simpleDateFormat.format(cal.getTime());
-		for (int i = 1; i <= maximum; ) {
-			int increment = 1;
+		for (int i = minimum; i <= maximum; i++) {
 			cal.set(Calendar.DAY_OF_MONTH, i);
-			if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
-				items.add(new DateInfo(cal.getTime()));
-			} else if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
-				increment = 6;
+			int day = cal.get(Calendar.DAY_OF_WEEK);
+			if (day == Calendar.SATURDAY || day == Calendar.SUNDAY) {
 				items.add(new DateInfo(cal.getTime()));
 			}
-			i += increment;
 		}
 
 		// set date info
-		List<DateInfo> dateInfos = DAO.getInstance().getDateInfos();
-		Date lastDate = Calendar.getInstance().getTime();
+		List<DateInfo> dateInfos = DAO.getInstance().getDateInfos(currentYear, currentMonth, 1);
+		Date now = new Date();
 		for (DateInfo item : items) {
+			boolean found = false;
+			Date itemDate = item.getDate();
 			for (DateInfo dateInfo : dateInfos) {
-				Date itemDate = item.getDate();
 				Date recordedDate = dateInfo.getDate();
 				if (itemDate.getYear() == recordedDate.getYear() &&
 					itemDate.getMonth() == recordedDate.getMonth() &&
 					itemDate.getDate() == recordedDate.getDate()) {
 					item.setStatus(dateInfo.getStatus());
-				} else if (itemDate.before(lastDate)) {
+					found = true;
+				}
+			}
+			if (!found) {
+				if (itemDate.before(now)) {
 					item.setStatusType(DateInfo.Type.DONE);
+				} else {
+					item.setStatusType(DateInfo.Type.READY);
 				}
 			}
 		}

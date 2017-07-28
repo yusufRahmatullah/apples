@@ -7,8 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import com.anakarwin.apples.daily.DailyFragment;
 import com.anakarwin.apples.dashboard.DashboardFragment;
 import com.anakarwin.apples.payment.PaymentFragment;
-import com.anakarwin.apples.schedule.dateDetails.DateDetailFragment;
 import com.anakarwin.apples.schedule.ScheduleFragment;
+import com.anakarwin.apples.schedule.dateDetails.DateDetailFragment;
 import com.anakarwin.apples.student.StudentFragment;
 import com.anakarwin.apples.student.studentDetails.StudentDetailsFragment;
 import com.anakarwin.apples.topic.TopicFragment;
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements INavigateFragment
 		for (int i = 0; i < fm.getBackStackEntryCount(); i++) {
 			fm.popBackStack();
 		}
-			fm.beginTransaction()
+		fm.beginTransaction()
 			.replace(R.id.fragmentContainer, new DashboardFragment())
 			.commit();
 	}

@@ -1,6 +1,7 @@
 package com.anakarwin.apples.daily;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -19,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
+import com.anakarwin.apples.INavigateFragment;
 import com.anakarwin.apples.R;
 import com.anakarwin.apples.model.DAO;
 import com.anakarwin.apples.model.DateInfo;
@@ -31,6 +33,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 /**
  * Created by E460 on 27/07/2017.
@@ -49,6 +54,15 @@ public class DailyFragment extends Fragment {
 	private List<DailyPresentItem> dailyPresentItems;
 	private List<DailyTopicItem> dailyTopicItems;
 	private Date currentDate;
+	private INavigateFragment navigateFragment;
+
+	@Override
+	public void onAttach(Context context) {
+		super.onAttach(context);
+		if (context instanceof INavigateFragment) {
+			navigateFragment = (INavigateFragment) context;
+		}
+	}
 
 	@Nullable
 	@Override
@@ -128,9 +142,34 @@ public class DailyFragment extends Fragment {
 		dailyTopicItems = new ArrayList<>();
 		List<Topic> topics = DAO.getInstance().getTopics(currentDate.getYear(), currentDate.getMonth(),
 			currentDate.getDate());
+		// assume students sorted by level
+		List<Integer> levels = new ArrayList<>();
+		int currentLevel = 0;
+		if (students != null && students.size() > 0) {
+			for (Student student : students) {
+				int level = student.getLevel();
+				if (level != currentLevel) {
+					currentLevel = level;
+					levels.add(level);
+				}
+			}
+		} else {
+			for (int i = 1; i <= 12; i++) {
+				levels.add(i);
+			}
+		}
+
 		if (topics != null && topics.size() > 0) {
-			for (Topic topic : topics) {
-				dailyTopicItems.add(new DailyTopicItem(topic.getLevel(), topic.getContent()));
+			for (Integer level : levels) {
+				for (Topic topic : topics) {
+					if (topic.getLevel() == level) {
+						dailyTopicItems.add(new DailyTopicItem(topic.getLevel(), topic.getContent()));
+					}
+				}
+			}
+		} else {
+			for (Integer level : levels) {
+				dailyTopicItems.add(new DailyTopicItem(level, ""));
 			}
 		}
 	}
@@ -201,10 +240,29 @@ public class DailyFragment extends Fragment {
 	private void saveFinalData() {
 		saveData();
 		DAO.getInstance().saveDateInfo(new DateInfo(currentDate, DateInfo.Type.DONE));
-
+		if (navigateFragment != null) {
+			navigateFragment.goToDashboard();
+		} else {
+			getActivity().onBackPressed();
+		}
 	}
 
 	private void saveData() {
 		presentAdapter.updateDailyPresent();
+		List<Present> presents = new ArrayList<>();
+		for (DailyPresentItem item : dailyPresentItems) {
+			if (item.isPresent()) {
+				presents.add(new Present(currentDate, item.getStudent()));
+			}
+		}
+		DAO.getInstance().savePresents(presents);
+
+		List<Topic> topics = new ArrayList<>();
+		for (DailyTopicItem item : dailyTopicItems) {
+			if (!item.getContent().isEmpty()) {
+				topics.add(new Topic(currentDate, item.getLevel(), item.getContent()));
+			}
+		}
+		DAO.getInstance().saveTopics(topics);
 	}
 }

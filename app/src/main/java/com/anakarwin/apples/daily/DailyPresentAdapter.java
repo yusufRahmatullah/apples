@@ -80,7 +80,6 @@ class DailyPresentAdapter extends ExpandableRecyclerAdapter<DailyPresentPVH, Dai
 				List<?> children = parents.get(i).getChildItemList();
 				for (int j = 0; j < children.size(); j++) {
 					DailyPresentChild child = (DailyPresentChild) children.get(j);
-					Log.e("debugdebug", "pos(a, c, p): " + currentPos + ", " + child.getChildPos() + ", " + child.getParentPos());
 					dailyPresentItems.get(currentPos).setPresent(child.getDailyPresent().isPresent());
 					currentPos++;
 				}

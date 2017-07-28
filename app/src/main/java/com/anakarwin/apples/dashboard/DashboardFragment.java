@@ -70,7 +70,7 @@ public class DashboardFragment extends Fragment {
 		items.add(new DashboardItem(R.drawable.ic_payment, getString(R.string.dashboard_payments)));
 		items.add(new DashboardItem(R.drawable.ic_topics, getString(R.string.dashboard_topics)));
 		items.add(new DashboardItem(R.drawable.ic_today, getContext().getString(R.string.dashboard_daily_input)));
-		items.add(new DashboardItem(R.drawable.ic_change_datas, getString(R.string.dashboard_change_data)));
+		items.add(new DashboardItem(R.drawable.ic_data_usage, getString(R.string.dashboard_change_data)));
 	}
 
 	private void navigateScreen(int position) {

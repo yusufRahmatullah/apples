@@ -6,11 +6,13 @@
 	<item
 		android:id="@+id/actionPreviousMonth"
 		android:title="@string/menu_see_previous_month"
+		android:icon="@drawable/ic_navigate_before"
 		android:orderInCategory="1"
-		app:showAsAction="never" />
+		app:showAsAction="ifRoom" />
 	<item
 		android:id="@+id/actionNextMonth"
 		android:title="@string/menu_see_next_month"
+		android:icon="@drawable/ic_navigate_next"
 		android:orderInCategory="2"
-		app:showAsAction="never" />
+		app:showAsAction="ifRoom" />
 </menu>

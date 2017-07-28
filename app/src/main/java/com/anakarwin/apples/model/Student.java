@@ -18,6 +18,8 @@ public class Student extends RealmObject {
 	private int level;
 
 	public Student() {
+		level = 0;
+		name = "";
 	}
 
 	public Student(String name, int level) {

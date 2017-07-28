@@ -1,6 +1,7 @@
 package com.anakarwin.apples.model;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.anakarwin.apples.plugin.ILoader;
 import com.anakarwin.apples.plugin.Loader;
@@ -38,10 +39,12 @@ public class DAO {
 	public static final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
 	public static final SimpleDateFormat dayDateFormatter = new SimpleDateFormat("EEE, dd-MM-yyy", Locale.getDefault());
 
+	private static final int DB_VERSION = 1;
+
 	public void initRealm(Context context) {
 		Realm.init(context);
 		RealmConfiguration configuration = new RealmConfiguration.Builder()
-			.schemaVersion(1)
+			.schemaVersion(DB_VERSION)
 			.migration(new DataMigration())
 			.initialData(new Realm.Transaction() {
 				@Override
@@ -51,19 +54,6 @@ public class DAO {
 			})
 			.build();
 		Realm.setDefaultConfiguration(configuration);
-	}
-
-	public List<DateInfo> getDateInfos() {
-		int fd = Calendar.getInstance().getActualMinimum(Calendar.DATE);
-		int ld = Calendar.getInstance().getActualMaximum(Calendar.DATE);
-		Calendar before = new GregorianCalendar();
-		before.set(Calendar.DAY_OF_MONTH, fd);
-		Calendar after = new GregorianCalendar();
-		after.set(Calendar.DAY_OF_MONTH, ld);
-		RealmResults<DateInfo> dateInfos = Realm.getDefaultInstance().where(DateInfo.class)
-			.between(DateInfo.FIELD_DATE, before.getTime(), after.getTime())
-			.findAll();
-		return dateInfos;
 	}
 
 	//region present
@@ -155,7 +145,20 @@ public class DAO {
 	//endregion
 
 	//region date info
+	public List<DateInfo> getDateInfos(int year, int month, int dayOfMonth) {
+		Calendar before = new GregorianCalendar(year, month, dayOfMonth);
+		int fd = before.getActualMinimum(Calendar.DATE);
+		int ld = before.getActualMaximum(Calendar.DATE);
+		before.set(Calendar.DAY_OF_MONTH, fd);
+		Calendar after = new GregorianCalendar(year, month, dayOfMonth);
+		after.set(Calendar.DAY_OF_MONTH, ld);
+		return Realm.getDefaultInstance().where(DateInfo.class)
+			.between(DateInfo.FIELD_DATE, before.getTime(), after.getTime())
+			.findAll();
+	}
+
 	public void saveDateInfo(final DateInfo dateInfo) {
+		Date date = dateInfo.getDate();
 		Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
 			@Override
 			public void execute(Realm realm) {
@@ -164,6 +167,13 @@ public class DAO {
 		});
 	}
 	//endregion
+
+	public int generateId(Date date) {
+		int year = date.getYear() * 10000;
+		int month = date.getMonth() * 100;
+		int dayOfMonth = date.getDate();
+		return year + month + dayOfMonth;
+	}
 
 	private void migrateData(Realm realm) {
 		Date d15 = new Date(2017 - 1900, 7 - 1, 15);

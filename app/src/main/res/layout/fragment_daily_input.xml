@@ -30,10 +30,10 @@
 		<TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
+			android:text="@string/daily_list_present"
 			android:textColor="@color/primary_text"
 			android:textSize="@dimen/item_title_text_size"
-			android:textStyle="bold"
-			android:text="@string/daily_list_present"/>
+			android:textStyle="bold"/>
 
 		<android.support.v7.widget.RecyclerView
 			android:id="@+id/presentList"
@@ -47,10 +47,10 @@
 		<TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
+			android:text="@string/daily_list_topic"
 			android:textColor="@color/primary_text"
 			android:textSize="@dimen/item_title_text_size"
-			android:textStyle="bold"
-			android:text="@string/daily_list_topic"/>
+			android:textStyle="bold"/>
 
 		<android.support.v7.widget.RecyclerView
 			android:id="@+id/topicList"
@@ -60,5 +60,16 @@
 		<View
 			android:layout_width="match_parent"
 			android:layout_height="@dimen/item_margin_small"/>
+
+		<Button
+			android:id="@+id/holidayBtn"
+			style="@style/Base.Widget.AppCompat.Button"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:paddingStart="@dimen/item_margin_small"
+			android:paddingEnd="@dimen/item_margin_small"
+			android:layout_gravity="center"
+			android:background="@color/holiday"
+			android:text="@string/daily_holiday_button"/>
 	</LinearLayout>
 </ScrollView>

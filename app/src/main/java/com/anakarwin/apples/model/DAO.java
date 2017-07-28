@@ -97,6 +97,20 @@ public class DAO {
 			}
 		});
 	}
+
+	public void deleteStudent(Student student) {
+		final Student recorded = Realm.getDefaultInstance().where(Student.class)
+			.equalTo(Student.FIELD_NAME, student.getName())
+			.findFirst();
+		if (recorded != null) {
+			Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
+				@Override
+				public void execute(Realm realm) {
+					recorded.deleteFromRealm();
+				}
+			});
+		}
+	}
 	//endregion
 
 	//region payment
@@ -120,6 +134,35 @@ public class DAO {
 				Realm.getDefaultInstance().copyToRealm(payment);
 			}
 		});
+	}
+
+	public void deletePayment(Payment payment) {
+		final Payment first = Realm.getDefaultInstance().where(Payment.class)
+			.equalTo(Payment.FIELD_ID, payment.getId())
+			.findFirst();
+		if (first != null) {
+			Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
+				@Override
+				public void execute(Realm realm) {
+					first.deleteFromRealm();
+				}
+			});
+		}
+	}
+
+	public Payment getStudentPayment(String name, Date date) {
+		RealmResults<Payment> payments = Realm.getDefaultInstance().where(Payment.class)
+			.equalTo(Payment.FIELD_STUDENT + "." + Student.FIELD_NAME, name)
+			.findAll();
+		for (Payment payment : payments) {
+			Date recDate = payment.getDate();
+			if (recDate.getYear() == date.getYear() &&
+				recDate.getMonth() == date.getMonth() &&
+				recDate.getDate() == date.getDate()) {
+				return payment;
+			}
+		}
+		return null;
 	}
 
 	public Date getStudentPayments(String name) {
@@ -170,8 +213,13 @@ public class DAO {
 			.findAll();
 	}
 
+	public DateInfo getDateInfo(Date date) {
+		return Realm.getDefaultInstance().where(DateInfo.class)
+			.equalTo(DateInfo.FIELD_ID, generateId(date))
+			.findFirst();
+	}
+
 	public void saveDateInfo(final DateInfo dateInfo) {
-		Date date = dateInfo.getDate();
 		Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
 			@Override
 			public void execute(Realm realm) {

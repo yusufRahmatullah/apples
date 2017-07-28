@@ -22,6 +22,7 @@ import com.anakarwin.apples.model.DAO;
 import com.anakarwin.apples.model.Payment;
 import com.anakarwin.apples.model.Student;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
@@ -37,10 +38,10 @@ public class PaymentFragment extends Fragment {
 	private RecyclerView.Adapter adapter;
 	private RecyclerView.LayoutManager layoutManager;
 
-	private Dialog addDialog;
-	private TextInputLayout nameLayout;
-	private TextInputEditText nameET;
-	private Button doneBtn;
+	private Dialog addDialog, delDialog;
+	private TextInputLayout nameLayout, delNameLayout, delDateLayout;
+	private TextInputEditText nameET, delNameET, delDateET;
+	private Button doneBtn, delDoneBtn;
 
 	public PaymentFragment() {
 	}
@@ -58,6 +59,7 @@ public class PaymentFragment extends Fragment {
 		listContainer.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
 		setupAdapter();
 		setupDialog();
+		setupDeleteDialog();
 		return view;
 	}
 
@@ -73,8 +75,22 @@ public class PaymentFragment extends Fragment {
 			case R.id.action_add_payment:
 				addDialog.show();
 				break;
+			case R.id.action_delete_payment:
+				delDialog.show();
+				break;
 		}
 		return true;
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		if (addDialog != null) {
+			addDialog.dismiss();
+		}
+		if (delDialog != null) {
+			delDialog.dismiss();
+		}
 	}
 
 	private void setupAdapter() {
@@ -95,7 +111,7 @@ public class PaymentFragment extends Fragment {
 			@Override
 			public void onClick(View view) {
 				String name = nameET.getText().toString();
-				if (name != null && !name.isEmpty()) {
+				if (!name.isEmpty()) {
 					Student student = DAO.getInstance().getStudent(name);
 					if (student != null) {
 						DAO.getInstance().addPayment(new Payment(new Date(), student));
@@ -107,6 +123,46 @@ public class PaymentFragment extends Fragment {
 					}
 				} else {
 					nameLayout.setError(getContext().getString(R.string.payment_add_error_input));
+				}
+			}
+		});
+	}
+
+	private void setupDeleteDialog() {
+		delDialog = new Dialog(getContext());
+		delDialog.setCancelable(true);
+		delDialog.setContentView(R.layout.dialog_delete_payment);
+		delDialog.setCanceledOnTouchOutside(true);
+		delDialog.setTitle(R.string.payment_delete_title);
+		delNameLayout = (TextInputLayout) delDialog.findViewById(R.id.nameLayout);
+		delDateLayout = (TextInputLayout) delDialog.findViewById(R.id.dateLayout);
+		delNameET = (TextInputEditText) delDialog.findViewById(R.id.nameET);
+		delDateET = (TextInputEditText) delDialog.findViewById(R.id.dateET);
+		delDoneBtn = (Button) delDialog.findViewById(R.id.doneBtn);
+		delDoneBtn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				String name = delNameET.getText().toString();
+				String dateString = delDateET.getText().toString();
+				Date date = null;
+				try {
+					date = DAO.dateFormatter.parse(dateString);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				if (!name.isEmpty() && date != null) {
+					Payment payment = DAO.getInstance().getStudentPayment(name, date);
+					if (payment != null) {
+						DAO.getInstance().deletePayment(payment);
+						initData();
+						setupAdapter();
+						delDialog.dismiss();
+					} else {
+						delNameLayout.setError(getContext().getString(R.string.payment_delete_error_payment_not_exist));
+					}
+				} else {
+					delNameLayout.setError(getContext().getString(R.string.payment_add_error_input));
+					delDateLayout.setError(getContext().getString(R.string.payment_add_error_input));
 				}
 			}
 		});

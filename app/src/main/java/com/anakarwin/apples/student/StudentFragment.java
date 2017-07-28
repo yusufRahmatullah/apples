@@ -39,10 +39,10 @@ public class StudentFragment extends Fragment {
 	private INavigateFragment navigateFragment;
 	private List<Student> students;
 
-	private Dialog addDialog;
-	private TextInputLayout nameLayout;
-	private TextInputEditText nameET, levelET;
-	private Button doneBtn;
+	private Dialog addDialog, deleteDialog;
+	private TextInputLayout nameLayout, delNameLayout;
+	private TextInputEditText nameET, levelET, delNameET;
+	private Button doneBtn, delDoneBtn;
 
 	@Override
 	public void onAttach(Context context) {
@@ -65,6 +65,7 @@ public class StudentFragment extends Fragment {
 		setupAdapter();
 		listContainer.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
 		setupDialog();
+		setupDeleteDialog();
 		return view;
 	}
 
@@ -99,7 +100,7 @@ public class StudentFragment extends Fragment {
 			public void onClick(View view) {
 				String name = nameET.getText().toString();
 				String level = levelET.getText().toString();
-				if (name != null && level != null && !name.isEmpty() && !level.isEmpty()) {
+				if (!name.isEmpty() && !level.isEmpty()) {
 					Student student = DAO.getInstance().getStudent(name);
 					if (student == null) {
 						DAO.getInstance().addStudent(new Student(name, Integer.parseInt(level)));
@@ -116,6 +117,37 @@ public class StudentFragment extends Fragment {
 		});
 	}
 
+	private void setupDeleteDialog() {
+		deleteDialog = new Dialog(getContext());
+		deleteDialog.setCancelable(true);
+		deleteDialog.setContentView(R.layout.dialog_delete_student);
+		deleteDialog.setCanceledOnTouchOutside(true);
+		deleteDialog.setTitle(R.string.student_delete_title);
+		delNameLayout = (TextInputLayout) deleteDialog.findViewById(R.id.nameLayout);
+		delNameET = (TextInputEditText) deleteDialog.findViewById(R.id.nameET);
+		delDoneBtn = (Button) deleteDialog.findViewById(R.id.doneBtn);
+		delDoneBtn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				String name = delNameET.getText().toString();
+				if (!name.isEmpty()) {
+					Student student = DAO.getInstance().getStudent(name);
+					if (student != null) {
+						DAO.getInstance().deleteStudent(student);
+						initData();
+						setupAdapter();
+						deleteDialog.dismiss();
+					} else {
+						delNameLayout.setError(getContext().getString(R.string.student_delete_error_name_not_exist));
+					}
+				} else {
+					delNameLayout.setError(getContext().getString(R.string.student_add_error_input));
+				}
+			}
+		});
+
+	}
+
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.menu_student, menu);
@@ -128,6 +160,8 @@ public class StudentFragment extends Fragment {
 			case R.id.action_add_student:
 				addDialog.show();
 				break;
+			case R.id.action_delete_student:
+				deleteDialog.show();
 		}
 		return true;
 	}
@@ -137,6 +171,9 @@ public class StudentFragment extends Fragment {
 		super.onPause();
 		if (addDialog != null) {
 			addDialog.dismiss();
+		}
+		if (deleteDialog != null) {
+			deleteDialog.dismiss();
 		}
 	}
 

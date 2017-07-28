@@ -10,13 +10,13 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
@@ -27,15 +27,11 @@ import com.anakarwin.apples.model.DateInfo;
 import com.anakarwin.apples.model.Present;
 import com.anakarwin.apples.model.Student;
 import com.anakarwin.apples.model.Topic;
-import com.bignerdranch.expandablerecyclerview.Model.ParentListItem;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
-import io.realm.Realm;
-import io.realm.RealmResults;
 
 /**
  * Created by E460 on 27/07/2017.
@@ -49,6 +45,7 @@ public class DailyFragment extends Fragment {
 	private TextView dateTV;
 	private DatePickerDialog datePickerDialog;
 	private AlertDialog alertDialog;
+	private Button holidayBtn;
 
 	private List<Student> students;
 	private List<DailyPresentItem> dailyPresentItems;
@@ -80,6 +77,8 @@ public class DailyFragment extends Fragment {
 				datePickerDialog.show();
 			}
 		});
+		holidayBtn = (Button) view.findViewById(R.id.holidayBtn);
+		setHolidayBtnBehavior();
 		initDialogs();
 		initView();
 		return view;
@@ -107,6 +106,28 @@ public class DailyFragment extends Fragment {
 		return true;
 	}
 
+	private void setHolidayBtnBehavior() {
+		DateInfo dateInfo = DAO.getInstance().getDateInfo(currentDate);
+		if (dateInfo != null && dateInfo.getStatusType() == DateInfo.Type.HOLIDAY) {
+			holidayBtn.setText(getString(R.string.daily_ready_button));
+			holidayBtn.setBackgroundResource(R.color.ready);
+			holidayBtn.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					saveAsReady();
+				}
+			});
+		} else {
+			holidayBtn.setText(getString(R.string.daily_holiday_button));
+			holidayBtn.setBackgroundResource(R.color.holiday);
+			holidayBtn.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					saveAsHoliday();
+				}
+			});
+		}
+	}
 
 	private void initData() {
 		currentDate = Calendar.getInstance().getTime();
@@ -226,6 +247,7 @@ public class DailyFragment extends Fragment {
 	}
 
 	private void refreshContent() {
+		setHolidayBtnBehavior();
 		initPresentData();
 		presentAdapter = DailyPresentAdapter.newInstance(dailyPresentItems);
 		presentList.setAdapter(presentAdapter);
@@ -245,6 +267,16 @@ public class DailyFragment extends Fragment {
 		} else {
 			getActivity().onBackPressed();
 		}
+	}
+
+	private void saveAsHoliday() {
+		DAO.getInstance().saveDateInfo(new DateInfo(currentDate, DateInfo.Type.HOLIDAY));
+		refreshContent();
+	}
+
+	private void saveAsReady() {
+		DAO.getInstance().saveDateInfo(new DateInfo(currentDate, DateInfo.Type.READY));
+		refreshContent();
 	}
 
 	private void saveData() {

@@ -43,6 +43,7 @@ public class StudentAdapter extends ExpandableRecyclerAdapter<StudentParentViewH
 					parentPos.add(i);
 				}
 			}
+			int actualPos = 0;
 			for (int i = 0; i < parentPos.size(); i++) {
 				int from = parentPos.get(i);
 				int to;
@@ -54,7 +55,8 @@ public class StudentAdapter extends ExpandableRecyclerAdapter<StudentParentViewH
 				List<StudentChild> children = new ArrayList<>();
 				List<Student> sublist = students.subList(from, to);
 				for (Student student : sublist) {
-					children.add(new StudentChild(student, from));
+					children.add(new StudentChild(student, actualPos));
+					actualPos++;
 				}
 				studentParents.add(new StudentParent(children));
 			}
@@ -85,7 +87,7 @@ public class StudentAdapter extends ExpandableRecyclerAdapter<StudentParentViewH
 	@Override
 	public void onBindChildViewHolder(StudentChildViewHolder childViewHolder, int position, Object childListItem) {
 		StudentChild child = (StudentChild) childListItem;
-		final int actualPos = child.getParentPos() + position;
+		final int actualPos = child.getActualPos();
 		childViewHolder.bind(child);
 		childViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -177,12 +179,12 @@ class StudentParent implements ParentListItem {
 
 class StudentChild {
 
-	private int parentPos;
+	private int actualPos;
 	private Student student;
 
-	public StudentChild(Student student, int parentPos) {
+	public StudentChild(Student student, int actualPos) {
 		this.student = student;
-		this.parentPos = parentPos;
+		this.actualPos = actualPos;
 	}
 
 	public int getLevel() {
@@ -197,7 +199,7 @@ class StudentChild {
 		return student != null ? student.getName() : "";
 	}
 
-	public int getParentPos() {
-		return parentPos;
+	public int getActualPos() {
+		return actualPos;
 	}
 }

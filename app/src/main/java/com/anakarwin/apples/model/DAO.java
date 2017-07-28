@@ -113,6 +113,15 @@ public class DAO {
 			.findAllSorted(Payment.FIELD_STUDENT + "." + Student.FIELD_LEVEL);
 	}
 
+	public void addPayment(final Payment payment) {
+		Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
+			@Override
+			public void execute(Realm realm) {
+				Realm.getDefaultInstance().copyToRealm(payment);
+			}
+		});
+	}
+
 	public Date getStudentPayments(String name) {
 		RealmResults<Payment> payments = Realm.getDefaultInstance().where(Payment.class)
 			.equalTo(Payment.FIELD_STUDENT + "." + Student.FIELD_NAME, name)

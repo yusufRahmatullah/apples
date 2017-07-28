@@ -32,6 +32,10 @@
 	<string name="student_add_error_name_exist">Name already exists</string>
 	<string name="student_add_error_input">Input error</string>
 
+	<string name="payment_add_title">Add New Student</string>
+	<string name="payment_add_error_name_not_exist">Name didn\'t exists</string>
+	<string name="payment_add_error_input">Input error</string>
+
 	<string name="schedule_saturday">Saturday</string>
 	<string name="schedule_sunday">Sunday</string>
 
@@ -41,6 +45,7 @@
 	<string name="menu_done">Done</string>
 	<string name="menu_refresh">Refresh</string>
 	<string name="menu_add_student">Add Student</string>
+	<string name="menu_add_payment">Add Payment</string>
 
 	<string name="addable_add">Add New</string>
 </resources>

@@ -3,6 +3,7 @@ package com.anakarwin.apples.student.studentDetails;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -90,6 +91,9 @@ public class StudentDetailsFragment extends Fragment {
 				getContext().getString(R.string.student_details_present_after_payment_format, presentAfterLastPayment));
 		} else if (studentPresents != null && studentPresents.size() > 0) {
 			present.setText(getContext().getString(R.string.student_details_present_format, studentPresents.size()));
+			lastPayment.setText(getContext().getString(R.string.student_details_last_payment_format, "-"));
+			presentAfterPayment.setText(
+				getContext().getString(R.string.student_details_present_after_payment_format, 0));
 		} else {
 			lastPayment.setText(getContext().getString(R.string.student_details_last_payment_format, "-"));
 			present.setText(getContext().getString(R.string.student_details_present_format, 0));

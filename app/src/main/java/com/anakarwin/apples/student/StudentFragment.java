@@ -146,7 +146,7 @@ public class StudentFragment extends Fragment {
 
 	private void navigateToStudentDetails(int position) {
 		if (students != null && position >= 0 && navigateFragment != null) {
-			navigateFragment.goToStudentDetails(students.get(0).getName());
+			navigateFragment.goToStudentDetails(students.get(position).getName());
 		}
 	}
 }

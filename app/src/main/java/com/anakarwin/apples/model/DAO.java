@@ -67,6 +67,13 @@ public class DAO {
 			.findAllSorted(Present.FIELD_DATE, Sort.DESCENDING);
 	}
 
+	public Present getStudentPresent (String name, Date date) {
+		return Realm.getDefaultInstance().where(Present.class)
+			.equalTo(Present.FIELD_ID, Present.generatePresentId(name, date))
+			.findFirst();
+	}
+
+
 	public void savePresents(final List<Present> presents) {
 		Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
 			@Override
@@ -74,6 +81,29 @@ public class DAO {
 				Realm.getDefaultInstance().copyToRealmOrUpdate(presents);
 			}
 		});
+	}
+
+	public void addPresent(final Present present) {
+		Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
+			@Override
+			public void execute(Realm realm) {
+				Realm.getDefaultInstance().copyToRealmOrUpdate(present);
+			}
+		});
+	}
+
+	public void deletePresent(Present present) {
+		final Present first = Realm.getDefaultInstance().where(Present.class)
+			.equalTo(Present.FIELD_ID, present.getId())
+			.findFirst();
+		if (first != null) {
+			Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
+				@Override
+				public void execute(Realm realm) {
+					first.deleteFromRealm();
+				}
+			});
+		}
 	}
 	//endregion
 
@@ -188,6 +218,35 @@ public class DAO {
 		return Realm.getDefaultInstance().where(Topic.class)
 			.between(Topic.FIELD_DATE, from, to)
 			.findAllSorted(Topic.FIELD_LEVEL);
+	}
+
+	public Topic getTopic(Date date, int level) {
+		return Realm.getDefaultInstance().where(Topic.class)
+			.equalTo(Topic.FIELD_ID, Topic.generateTopicId(date, level))
+			.findFirst();
+	}
+
+	public void deleteTopic(Topic topic) {
+		final Topic first = Realm.getDefaultInstance().where(Topic.class)
+			.equalTo(Topic.FIELD_ID, topic.getId())
+			.findFirst();
+		if (first != null) {
+			Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
+				@Override
+				public void execute(Realm realm) {
+					first.deleteFromRealm();
+				}
+			});
+		}
+	}
+
+	public void addTopic(final Topic topic) {
+		Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
+			@Override
+			public void execute(Realm realm) {
+				Realm.getDefaultInstance().copyToRealmOrUpdate(topic);
+			}
+		});
 	}
 
 	public void saveTopics(final List<Topic> topics) {

@@ -33,15 +33,33 @@
 	<string name="student_add_title">Add New Student</string>
 	<string name="student_delete_title">Delete Student</string>
 	<string name="student_add_error_name_exist">Name already exists</string>
-	<string name="student_delete_error_name_not_exist">Name didn\'t exists</string>
+	<string name="student_delete_error_name_not_exist">Name doesn\'t exist</string>
 	<string name="student_add_error_input">Input error</string>
 
 
 	<string name="payment_add_title">Add New Student</string>
 	<string name="payment_delete_title">Delete Student</string>
-	<string name="payment_add_error_name_not_exist">Name didn\'t exists</string>
+	<string name="payment_add_error_name_not_exist">Name doesn\'t exist</string>
 	<string name="payment_add_error_input">Input error</string>
-	<string name="payment_delete_error_payment_not_exist">Payment didn\'t exists</string>
+	<string name="payment_delete_error_payment_not_exist">Payment doesn\'t exist</string>
+
+	<string name="present_add_title">Add New Present</string>
+	<string name="present_delete_title">Delete Present</string>
+	<string name="present_add_error_name_not_exist">Name doesn\'t exist</string>
+	<string name="present_add_error_name_exist">Name already exists</string>
+	<string name="present_add_error_date_not_exist">Date doesn\'t exist</string>
+	<string name="present_add_error_input">Input error</string>
+
+	<string name="topic_add_title">Add New Topic</string>
+	<string name="topic_delete_title">Delete Topic</string>
+	<string name="topic_error_level_not_exist">Class doesn\'t exist</string>
+	<string name="topic_error_date_not_exist">Date doesn\'t exist</string>
+	<string name="topic_error_already_exists">Topic already exists</string>
+	<string name="topic_error_not_exists">Topic doesn\'t exist</string>
+	<string name="topic_error_input">Input error</string>
+	<string name="topic_level_hint">Class</string>
+	<string name="topic_date_hint">Date</string>
+	<string name="topic_content_hint">Content</string>
 
 	<string name="schedule_saturday">Saturday</string>
 	<string name="schedule_sunday">Sunday</string>
@@ -55,6 +73,10 @@
 	<string name="menu_delete_student">Delete Student</string>
 	<string name="menu_add_payment">Add Payment</string>
 	<string name="menu_delete_payment">Delete Payment</string>
+	<string name="menu_add_present">Add Present</string>
+	<string name="menu_delete_present">Delete Present</string>
+	<string name="menu_add_topic">Add Topic</string>
+	<string name="menu_delete_topic">Delete Topic</string>
 
 	<string name="addable_add">Add New</string>
 	<string name="date_format">dd-MM-yyyy</string>

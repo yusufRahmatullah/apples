@@ -182,10 +182,16 @@ public class DailyFragment extends Fragment {
 
 		if (topics != null && topics.size() > 0) {
 			for (Integer level : levels) {
+				boolean found = false;
 				for (Topic topic : topics) {
 					if (topic.getLevel() == level) {
+						found = true;
 						dailyTopicItems.add(new DailyTopicItem(topic.getLevel(), topic.getContent()));
+						break;
 					}
+				}
+				if (!found) {
+					dailyTopicItems.add(new DailyTopicItem(level, ""));
 				}
 			}
 		} else {

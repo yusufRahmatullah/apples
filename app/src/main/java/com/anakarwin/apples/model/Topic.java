@@ -1,6 +1,5 @@
 package com.anakarwin.apples.model;
 
-import java.util.Calendar;
 import java.util.Date;
 
 import io.realm.RealmObject;
@@ -17,6 +16,10 @@ public class Topic extends RealmObject {
 	public static final String FIELD_DATE = "date";
 	public static final String FIELD_LEVEL = "level";
 	public static final String FIELD_CONTENT = "content";
+
+	public static int generateTopicId(Date date, int level) {
+		return DAO.getInstance().generateId(date) * 100 + level;
+	}
 
 	@PrimaryKey
 	private int id;

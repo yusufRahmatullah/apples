@@ -1,6 +1,5 @@
 package com.anakarwin.apples.model;
 
-import java.util.Calendar;
 import java.util.Date;
 
 import io.realm.RealmObject;
@@ -16,6 +15,14 @@ public class Present extends RealmObject {
 	public static final String FIELD_ID = "id";
 	public static final String FIELD_DATE = "date";
 	public static final String FIELD_STUDENT = "student";
+
+	public static String generatePresentId(String name, Date date) {
+		try {
+			return DAO.dateFormatter.format(date) + name;
+		} catch (Exception e) {
+			return "";
+		}
+	}
 
 	@PrimaryKey
 	private String id;

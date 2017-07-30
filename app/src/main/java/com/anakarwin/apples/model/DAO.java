@@ -300,12 +300,14 @@ public class DAO {
 		Date d16 = new Date(2017 - 1900, 7 - 1, 16);
 		Date d22 = new Date(2017 - 1900, 7 - 1, 22);
 		Date d23 = new Date(2017 - 1900, 7 - 1, 23);
+		Date d29 = new Date(2017 - 1900, 7 - 1, 29);
 
 		List<DateInfo> dateInfos = new ArrayList<>();
 		dateInfos.add(new DateInfo(d15, DateInfo.Type.DONE));
 		dateInfos.add(new DateInfo(d16, DateInfo.Type.DONE));
 		dateInfos.add(new DateInfo(d22, DateInfo.Type.DONE));
 		dateInfos.add(new DateInfo(d23, DateInfo.Type.DONE));
+		dateInfos.add(new DateInfo(d29, DateInfo.Type.DONE));
 
 		Student ilham = new Student("Ilham", 6);
 		Student silsi = new Student("Silsi", 6);
@@ -313,6 +315,10 @@ public class DAO {
 		Student fitri = new Student("Fitri", 6);
 		Student arum = new Student("Arum", 6);
 		Student noval = new Student("Noval", 6);
+		Student favian = new Student("Favian", 6);
+		Student andin = new Student("Andin", 6);
+		Student sindi = new Student("Sindi", 6);
+		Student velisa = new Student("Velisa", 6);
 		Student irfan = new Student("Irfan", 9);
 		Student habib = new Student("Habib", 9);
 		Student tegar = new Student("Tegar", 9);
@@ -326,6 +332,10 @@ public class DAO {
 		students.add(arum);
 		students.add(fitri);
 		students.add(noval);
+		students.add(favian);
+		students.add(andin);
+		students.add(sindi);
+		students.add(velisa);
 		students.add(irfan);
 		students.add(habib);
 		students.add(tegar);
@@ -338,10 +348,12 @@ public class DAO {
 		topics.add(new Topic(d16, 6, "Konversi Bilangan Desimal"));
 		topics.add(new Topic(d22, 6, "Mengurutkan Bilandan Desimal"));
 		topics.add(new Topic(d23, 6, "Operasi Bilangan Desimal"));
+		topics.add(new Topic(d29, 6, "Bilangan Pangkat 3"));
 		topics.add(new Topic(d15, 9, "Operasi Bilangan Berpangkat"));
 		topics.add(new Topic(d16, 9, "Bilangan Baku"));
 		topics.add(new Topic(d22, 9, "Kesebangunan"));
 		topics.add(new Topic(d23, 9, "Kesebangunan"));
+		topics.add(new Topic(d29, 9, "Kekongruenan"));
 		topics.add(new Topic(d15, 10, "Persamaan Nilai Mutlak"));
 		topics.add(new Topic(d16, 10, "Persamaan Nilai Mutlak"));
 		topics.add(new Topic(d22, 10, "Pertidaksamaan Nilai Mutlak"));
@@ -363,6 +375,16 @@ public class DAO {
 		presents.add(new Present(d22, arum));
 		presents.add(new Present(d23, arum));
 		presents.add(new Present(d22, noval));
+		presents.add(new Present(d29, ilham));
+		presents.add(new Present(d29, fitri));
+		presents.add(new Present(d29, arum));
+		presents.add(new Present(d29, noval));
+		presents.add(new Present(d29, favian));
+		presents.add(new Present(d29, andin));
+		presents.add(new Present(d29, silsi));
+		presents.add(new Present(d29, indah));
+		presents.add(new Present(d29, sindi));
+		presents.add(new Present(d29, velisa));
 
 		presents.add(new Present(d15, irfan));
 		presents.add(new Present(d16, irfan));
@@ -379,6 +401,11 @@ public class DAO {
 		presents.add(new Present(d23, bayu));
 		presents.add(new Present(d22, ainun));
 		presents.add(new Present(d23, ainun));
+		presents.add(new Present(d29, irfan));
+		presents.add(new Present(d29, habib));
+		presents.add(new Present(d29, tegar));
+		presents.add(new Present(d29, bayu));
+		presents.add(new Present(d29, ainun));
 
 		presents.add(new Present(d15, ikhsan));
 		presents.add(new Present(d16, ikhsan));
@@ -387,6 +414,8 @@ public class DAO {
 		List<Payment> payments = new ArrayList<>();
 		payments.add(new Payment(d22, fitri));
 		payments.add(new Payment(d22, ikhsan));
+		payments.add(new Payment(d29, favian));
+		payments.add(new Payment(d29, arum));
 
 		realm.copyToRealmOrUpdate(dateInfos);
 		realm.copyToRealmOrUpdate(presents);

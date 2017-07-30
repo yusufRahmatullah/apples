@@ -117,6 +117,7 @@ public class PaymentFragment extends Fragment {
 						DAO.getInstance().addPayment(new Payment(new Date(), student));
 						initData();
 						setupAdapter();
+						nameLayout.setError(null);
 						addDialog.dismiss();
 					} else {
 						nameLayout.setError(getContext().getString(R.string.payment_add_error_name_not_exist));
@@ -156,6 +157,7 @@ public class PaymentFragment extends Fragment {
 						DAO.getInstance().deletePayment(payment);
 						initData();
 						setupAdapter();
+						delNameLayout.setError(null);
 						delDialog.dismiss();
 					} else {
 						delNameLayout.setError(getContext().getString(R.string.payment_delete_error_payment_not_exist));

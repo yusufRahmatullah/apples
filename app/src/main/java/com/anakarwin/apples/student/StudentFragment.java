@@ -106,6 +106,7 @@ public class StudentFragment extends Fragment {
 						DAO.getInstance().addStudent(new Student(name, Integer.parseInt(level)));
 						initData();
 						setupAdapter();
+						nameLayout.setError(null);
 						addDialog.dismiss();
 					} else {
 						nameLayout.setError(getContext().getString(R.string.student_add_error_name_exist));
@@ -136,6 +137,7 @@ public class StudentFragment extends Fragment {
 						DAO.getInstance().deleteStudent(student);
 						initData();
 						setupAdapter();
+						delNameLayout.setError(null);
 						deleteDialog.dismiss();
 					} else {
 						delNameLayout.setError(getContext().getString(R.string.student_delete_error_name_not_exist));

@@ -195,7 +195,7 @@ public class DAO {
 		return null;
 	}
 
-	public Date getStudentPayments(String name) {
+	public Date getStudentLastPayment(String name) {
 		RealmResults<Payment> payments = Realm.getDefaultInstance().where(Payment.class)
 			.equalTo(Payment.FIELD_STUDENT + "." + Student.FIELD_NAME, name)
 			.findAllSorted(Payment.FIELD_DATE, Sort.DESCENDING);
@@ -203,6 +203,16 @@ public class DAO {
 			return payments.get(0).getDate();
 		}
 		return null;
+	}
+
+	public int getStudentPaymentsCount(String name) {
+		RealmResults<Payment> payments = Realm.getDefaultInstance().where(Payment.class)
+			.equalTo(Payment.FIELD_STUDENT + "." + Student.FIELD_NAME, name)
+			.findAll();
+		if (payments != null && payments.size() > 0) {
+			return payments.size();
+		}
+		return 0;
 	}
 	//endregion
 

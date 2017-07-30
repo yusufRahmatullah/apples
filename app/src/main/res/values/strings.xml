@@ -25,6 +25,7 @@
 	<string name="student_details_present_format">Presents: %1$d</string>
 	<string name="student_details_present_after_payment_format">Present after payment: %1$d</string>
 	<string name="student_details_last_payment_format">Last payment: %1$s</string>
+	<string name="student_details_all_payment_format">All payments: %1$d</string>
 	<string name="student_details_show_details">More</string>
 	<string name="student_details_hide_details">Less</string>
 	<string name="student_add_name_hint">Name</string>

@@ -3,7 +3,6 @@ package com.anakarwin.apples.student.studentDetails;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +27,7 @@ public class StudentDetailsFragment extends Fragment {
 	private Student student;
 	private Date studentLastPayment;
 	private List<Present> studentPresents;
-	private TextView name, level, present, lastPayment, presentAfterPayment;
+	private TextView name, level, present, lastPayment, presentAfterPayment, allPayments;
 
 	public static StudentDetailsFragment newInstance(String name) {
 
@@ -54,13 +53,14 @@ public class StudentDetailsFragment extends Fragment {
 		present = (TextView) view.findViewById(R.id.present);
 		presentAfterPayment = (TextView) view.findViewById(R.id.presentAfterPayment);
 		lastPayment = (TextView) view.findViewById(R.id.lastPayment);
+		allPayments = (TextView) view.findViewById(R.id.allPayments);
 		bindView();
 		return view;
 	}
 
 	private void initData(String name) {
 		student = DAO.getInstance().getStudent(name);
-		studentLastPayment = DAO.getInstance().getStudentPayments(name);
+		studentLastPayment = DAO.getInstance().getStudentLastPayment(name);
 		studentPresents = DAO.getInstance().getStudentPresents(name);
 	}
 
@@ -68,9 +68,12 @@ public class StudentDetailsFragment extends Fragment {
 		if (student != null) {
 			name.setText(student.getName());
 			level.setText(getContext().getString(R.string.class_format, student.getLevel()));
+			int studentPaymentsCount = DAO.getInstance().getStudentPaymentsCount(student.getName());
+			allPayments.setText(getContext().getString(R.string.student_details_all_payment_format, studentPaymentsCount));
 		} else {
 			name.setText("-");
 			level.setText(getContext().getString(R.string.class_format, 0));
+			allPayments.setText(getContext().getString(R.string.student_details_all_payment_format, 0));
 		}
 
 		if (studentLastPayment != null && studentPresents != null && studentPresents.size() > 0) {

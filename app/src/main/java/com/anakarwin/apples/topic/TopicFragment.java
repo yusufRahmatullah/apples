@@ -132,6 +132,8 @@ public class TopicFragment extends Fragment {
 					DAO.getInstance().deleteTopic(topic);
 					initData();
 					setupAdapter();
+					delDateLayout.setError(null);
+					delLevelLayout.setError(null);
 					delDialog.dismiss();
 				}
 			}
@@ -185,6 +187,9 @@ public class TopicFragment extends Fragment {
 						DAO.getInstance().addTopic(new Topic(date, level, contentET.getText().toString()));
 						initData();
 						setupAdapter();
+						levelLayout.setError(null);
+						dateLayout.setError(null);
+						contentLayout.setError(null);
 						addDialog.dismiss();
 					}
 

@@ -65,4 +65,14 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"/>
 
+	<TextView
+		android:id="@+id/allPayments"
+		android:layout_below="@id/lastPayment"
+		android:textSize="@dimen/item_title_text_size"
+		android:textColor="@color/primary_text"
+		android:layout_marginBottom="@dimen/item_margin_small"
+		tools:text="Last payment: 22-07-2016"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"/>
+
 </RelativeLayout>

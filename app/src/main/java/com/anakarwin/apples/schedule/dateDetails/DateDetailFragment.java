@@ -147,6 +147,7 @@ public class DateDetailFragment extends Fragment {
 						DAO.getInstance().deletePresent(present);
 						initData(year, month, date);
 						setupAdapter();
+						delNameLayout.setError(null);
 						delDialog.dismiss();
 					} else {
 						delNameLayout.setError(getContext().getString(R.string.present_add_error_name_not_exist));
@@ -181,6 +182,7 @@ public class DateDetailFragment extends Fragment {
 							DAO.getInstance().addPresent(present);
 							initData(year, month, date);
 							setupAdapter();
+							nameLayout.setError(null);
 							addDialog.dismiss();
 						} else {
 							nameLayout.setError(getContext().getString(R.string.present_add_error_name_exist));

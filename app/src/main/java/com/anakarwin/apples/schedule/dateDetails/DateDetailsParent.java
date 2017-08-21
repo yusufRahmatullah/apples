@@ -26,7 +26,7 @@ public class DateDetailsParent implements ParentListItem {
 
 	@Override
 	public boolean isInitiallyExpanded() {
-		return presents != null && presents.size() > 0;
+		return false;
 	}
 
 	public int getLevel() {

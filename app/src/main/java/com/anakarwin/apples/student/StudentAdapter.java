@@ -158,7 +158,7 @@ class StudentParent implements ParentListItem {
 
 	@Override
 	public boolean isInitiallyExpanded() {
-		return children != null && children.size() > 0;
+		return false;
 	}
 
 	public int getLevel() {
